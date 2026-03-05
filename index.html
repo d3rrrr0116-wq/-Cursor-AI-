@@ -55,8 +55,8 @@
     /* 渐进式披露动效（参考 Linear）：进入视口时淡入上移，子元素错落延迟 */
     .reveal-item {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translateY(28px);
+      transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .section-in-view .reveal-item {
@@ -65,18 +65,18 @@
     }
 
     .screen .reveal-item:nth-child(1) { transition-delay: 0s; }
-    .screen .reveal-item:nth-child(2) { transition-delay: 0.06s; }
-    .screen .reveal-item:nth-child(3) { transition-delay: 0.12s; }
-    .screen .reveal-item:nth-child(4) { transition-delay: 0.18s; }
-    .screen .reveal-item:nth-child(5) { transition-delay: 0.24s; }
-    .screen .reveal-item:nth-child(6) { transition-delay: 0.3s; }
-    .screen .reveal-item:nth-child(7) { transition-delay: 0.36s; }
-    .screen .reveal-item:nth-child(8) { transition-delay: 0.42s; }
+    .screen .reveal-item:nth-child(2) { transition-delay: 0.12s; }
+    .screen .reveal-item:nth-child(3) { transition-delay: 0.24s; }
+    .screen .reveal-item:nth-child(4) { transition-delay: 0.36s; }
+    .screen .reveal-item:nth-child(5) { transition-delay: 0.48s; }
+    .screen .reveal-item:nth-child(6) { transition-delay: 0.6s; }
+    .screen .reveal-item:nth-child(7) { transition-delay: 0.72s; }
+    .screen .reveal-item:nth-child(8) { transition-delay: 0.84s; }
 
     .page-section .reveal-item:nth-child(1) { transition-delay: 0s; }
-    .page-section .reveal-item:nth-child(2) { transition-delay: 0.08s; }
-    .page-section .reveal-item:nth-child(3) { transition-delay: 0.16s; }
-    .page-section .reveal-item:nth-child(4) { transition-delay: 0.24s; }
+    .page-section .reveal-item:nth-child(2) { transition-delay: 0.16s; }
+    .page-section .reveal-item:nth-child(3) { transition-delay: 0.32s; }
+    .page-section .reveal-item:nth-child(4) { transition-delay: 0.48s; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal-item {
@@ -304,11 +304,16 @@
       background: #0d0d0e;
     }
 
+    #section-steps {
+      min-height: auto;
+      /* 高度随内容卡片自适应 */
+    }
+
     .closing__subtitle {
-      font-size: 24px;
+      font-size: 16px;
       font-weight: 300;
       line-height: 1.7;
-      color: var(--text-secondary);
+      color: #84838e;
       text-align: left;
       margin: 20px 0 0;
       padding-left: 24px;
@@ -325,7 +330,7 @@
     }
 
     .closing__title {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 300;
       line-height: 1.8;
       color: #fff;
@@ -428,58 +433,59 @@
       font-weight: 500;
     }
 
-    .steps-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .steps-pagination-wrap {
+      position: relative;
       width: 100%;
-      margin-bottom: 40px;
     }
-    .steps-header .page-section__title {
-      margin-bottom: 0;
-    }
-    .steps-arrows {
-      display: flex;
-      align-items: center;
-      align-self: center;
-      gap: 16px;
-    }
-    .steps-arrow {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 300;
-      color: #fff;
-      background: rgba(26, 26, 28, 0.9);
-      border: 1px solid #45454B;
-      border-radius: 50%;
+    .steps-click-area {
+      display: none;
+      position: fixed;
+      top: var(--nav-height, 72px);
+      bottom: 0;
+      width: 20%;
+      max-width: 200px;
+      min-width: 80px;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      z-index: 5;
     }
-    .steps-arrow:hover:not(:disabled) {
-      background: #2a2a2e;
-      border-color: #7984F7;
-      color: #9ba4f9;
+    #section-steps.section-in-view .steps-click-area {
+      display: block;
     }
-    .steps-arrow:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
+    .steps-click-area--disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+    .steps-click-area--prev {
+      left: 0;
+    }
+    .steps-click-area--next {
+      right: 0;
     }
 
     .step-panels {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 24px;
       width: 100%;
-      margin-top: 0;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      align-items: flex-start;
+      transition: height 0.25s ease;
     }
-
-    .step-panel {
+    .step-panels::-webkit-scrollbar {
       display: none;
     }
 
-    .step-panel.is-active {
-      display: block;
+    .step-panel {
+      flex: 0 0 100%;
+      min-width: 100%;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      box-sizing: border-box;
     }
 
     .embed-card {
@@ -1125,7 +1131,7 @@
     <div class="page-section__inner">
       <h2 class="page-section__title reveal-item">为什么选择 Cursor ?</h2>
       <p class="category-title reveal-item">拥有系统构建能力</p>
-      <p class="category-desc reveal-item">搭建个人工作系统，Cursor 相比 ChatGPT 和 Gemini 的优势主要体现在<a href="#term-system-build" class="term-link" data-tooltip="指 AI 能够创建、修改、组织文件与项目结构的能力，如 Cursor 可帮你搭建知识库、生成 AGENTS.md 等，而非仅做单次问答。">系统构建能力</a>而非「问答能力」。</p>
+      <p class="category-desc reveal-item">搭建个人工作系统，Cursor 相比 ChatGPT 和 Gemini 的优势主要体现在<a id="ref-term-system-build" href="#term-system-build" class="term-link" data-tooltip="指 AI 能够创建、修改、组织文件与项目结构的能力，如 Cursor 可帮你搭建知识库、生成 AGENTS.md 等，而非仅做单次问答。">系统构建能力</a>而非「问答能力」。</p>
       <div class="page-section__content reveal-item">
         <div class="card-row">
           <div class="card">
@@ -1150,7 +1156,7 @@
           </div>
         </div>
         <div class="compare-table-wrap">
-          <h3 class="compare-table-title screen__meta">Cursor VS chatGPT、Gemini</h3>
+          <h3 class="compare-table-title screen__meta">Cursor VS ChatGPT、Gemini</h3>
           <table class="compare-table" role="table">
             <thead>
               <tr>
@@ -1163,7 +1169,7 @@
             <tbody>
               <tr>
                 <td>本质定位</td>
-                <td>AI 原生 <a href="#term-ide" class="term-link" data-tooltip="IDE（集成开发环境）：集成写代码、调试、运行等功能的软件，Cursor 即属于 AI 原生 IDE。">IDE</a></td>
+                <td>AI 原生 <a id="ref-term-ide" href="#term-ide" class="term-link" data-tooltip="IDE（集成开发环境）：集成写代码、调试、运行等功能的软件，Cursor 即属于 AI 原生 IDE。">IDE</a></td>
                 <td>通用对话模型</td>
                 <td>生态整合助手</td>
               </tr>
@@ -1195,10 +1201,10 @@
           </table>
         </div>
         <h2 class="category-title reveal-item">可快速建立对 AI 的直觉</h2>
-      <p class="category-desc reveal-item">内化人工智能概念最有效的方法，就是摒弃<a href="#term-consumer-ui" class="term-link" data-tooltip="面向普通用户的对话式 AI 产品形态，如 ChatGPT、Gemini，强调易用与即时反馈。">消费级用户界面</a>（例如 ChatGPT、Gemini 和 Lovable），转而尝试拥有“代理”（AGENT）能力的工具，例如 Cursor 和 Claude Code。</p>
+      <p class="category-desc reveal-item">内化人工智能概念最有效的方法，就是摒弃<a id="ref-term-consumer-ui" href="#term-consumer-ui" class="term-link" data-tooltip="面向普通用户的对话式 AI 产品形态，如 ChatGPT、Gemini，强调易用与即时反馈。">消费级用户界面</a>（例如 ChatGPT、Gemini 和 Lovable），转而尝试拥有“代理”（AGENT）能力的工具，例如 Cursor 和 Claude Code。</p>
         <div class="content-card-stack">
           <div class="content-card reveal-item">
-            <div class="content-card__title"><a href="#term-context-awareness" class="term-link" data-tooltip="AI 理解并利用任务背景信息的能力，如跨文件处理、读取项目结构、报错时自我修正。">上下文感知</a></div>
+            <div class="content-card__title"><a id="ref-term-context-awareness" href="#term-context-awareness" class="term-link" data-tooltip="AI 理解并利用任务背景信息的能力，如跨文件处理、读取项目结构、报错时自我修正。">上下文感知</a></div>
             <div class="content-card__media">
               <div class="demo-frame demo-1">
                 <div class="demo-frame__titlebar"><span>📁</span> EXPLORER · Cursor</div>
@@ -1254,7 +1260,7 @@
                 </div>
               </div>
             </div>
-            <p class="content-card__body">编码代理通常会先写下 Plan，再执行。这种「<a href="#term-cot" class="term-link" data-tooltip="让 AI 在给出答案前先写出推理步骤的提示方法，常体现为「先 Plan 再执行」的工作流。">思考链（CoT）</a>」的工程化体现，是理解 AI 能力边界的关键。</p>
+            <p class="content-card__body">编码代理通常会先写下 Plan，再执行。这种「<a id="ref-term-cot" href="#term-cot" class="term-link" data-tooltip="让 AI 在给出答案前先写出推理步骤的提示方法，常体现为「先 Plan 再执行」的工作流。">思考链（CoT）</a>」的工程化体现，是理解 AI 能力边界的关键。</p>
           </div>
         </div>
       </div>
@@ -1262,13 +1268,10 @@
   </section>
   <section class="page-section page-section--darker" id="section-steps" aria-label="搭建步骤">
     <div class="page-section__inner">
-      <div class="steps-header reveal-item">
-        <h2 class="page-section__title">搭建步骤</h2>
-        <div class="steps-arrows">
-          <button type="button" class="steps-arrow steps-arrow--prev" id="steps-prev" aria-label="上一步" title="上一步">‹</button>
-          <button type="button" class="steps-arrow steps-arrow--next" id="steps-next" aria-label="下一步" title="下一步">›</button>
-        </div>
-      </div>
+      <h2 class="page-section__title reveal-item">搭建步骤</h2>
+      <div class="steps-pagination-wrap">
+        <div class="steps-click-area steps-click-area--prev" id="steps-prev" role="button" tabindex="0" aria-label="上一步" title="点击左侧空白上一步"></div>
+        <div class="steps-click-area steps-click-area--next" id="steps-next" role="button" tabindex="0" aria-label="下一步" title="点击右侧空白下一步"></div>
       <nav class="steps-nav reveal-item" aria-label="搭建步骤导航">
         <a href="#step-01" class="steps-nav__link steps-nav__link--active" data-step="01">01 安装</a>
         <a href="#step-02" class="steps-nav__link" data-step="02">02 创建</a>
@@ -1382,7 +1385,7 @@
             </div>
           </div>
           <div class="step-panel" id="step-05" data-step="05" role="tabpanel">
-            <p class="page-section__subtitle">第五步，体验检索增强生成（<a href="#term-rag" class="term-link" data-tooltip="检索增强生成：在回答前先从文档、知识库中检索相关内容，再基于这些内容生成回答。">RAG</a>）</p>
+            <p class="page-section__subtitle">第五步，体验检索增强生成（<a id="ref-term-rag" href="#term-rag" class="term-link" data-tooltip="检索增强生成：在回答前先从文档、知识库中检索相关内容，再基于这些内容生成回答。">RAG</a>）</p>
             <div class="step-block__cards">
               <div class="step-block__card">
                 <div class="step-block__card-media">
@@ -1430,7 +1433,7 @@
                     <li>用户反馈整理</li>
                     <li>行业研究报告</li>
                   </ul>
-                  <p>然后可以这样问 AI：「根据知识库里的会议记录，帮我整理出本周的待办并创建到 Tasks/」。AI 会读取文件内容、提炼要点，然后直接帮你创建任务文件。所有成果都保存在本地，你可以随时查看和编辑。</p>
+                  <p>然后可以这样问 AI：「根据知识库里的会议记录，帮我整理出本周的待办并创建到 <span class="term-link" data-tooltip="Tasks 后面的斜线 / 表示这是一个文件夹路径，而不是单个文件名。">Tasks/</span>」。AI 会读取文件内容、提炼要点，然后直接帮你创建任务文件。所有成果都保存在本地，你可以随时查看和编辑。</p>
                 </div>
               </div>
             </div>
@@ -1493,6 +1496,7 @@
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -1572,7 +1576,7 @@
         <br>
         <p class="closing__title closing__list-item reveal-item">现在就打开 Cursor，构建你的个人 AI 工作系统。如果你有任何问题，可与我联系，但我不一定会解答，因为我也在摸索😁。</p>
         <br>
-        <p class="closing__subtitle reveal-item">最后，本网页全程由 Cursor 生成，耗时约 16 小时。于 2026-03-05 11:26 完成终稿。</p>
+        <p class="closing__subtitle reveal-item">最后，本网页由 Cursor 生成，耗时约 16 小时。于 2026-03-05 11:26 完成终稿。</p>
       </div>
     </div>
   </section>
@@ -1648,6 +1652,23 @@
         });
       }
 
+      (function initTermLinks() {
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest('a.term-link[href^="#term-"]');
+          if (!a) return;
+          var id = a.getAttribute('href').slice(1);
+          var target = document.getElementById(id);
+          if (target) {
+            e.preventDefault();
+            var prevScrollBehavior = document.documentElement.style.scrollBehavior;
+            document.documentElement.style.scrollBehavior = 'auto';
+            target.scrollIntoView({ block: 'start', behavior: 'auto' });
+            document.documentElement.style.scrollBehavior = prevScrollBehavior;
+            if (history.pushState) history.pushState(null, '', '#' + id);
+          }
+        });
+      })();
+
       (function initStepsNav() {
         var stepsNav = document.querySelector('.steps-nav');
         var panelsWrap = document.querySelector('.step-panels');
@@ -1656,6 +1677,48 @@
         if (!stepsNav || !panelsWrap) return;
         var allPanels = panelsWrap.querySelectorAll('.step-panel');
         var stepOrder = Array.from(allPanels).map(function (p) { return p.id; });
+        function syncPanelsHeight() {
+          var active = panelsWrap.querySelector('.step-panel.is-active');
+          if (active) panelsWrap.style.height = active.offsetHeight + 'px';
+        }
+        function updateActiveFromScroll() {
+          var scrollLeft = panelsWrap.scrollLeft;
+          var center = scrollLeft + panelsWrap.clientWidth / 2;
+          var closest = null;
+          var minDist = Infinity;
+          allPanels.forEach(function (p) {
+            var panelCenter = p.offsetLeft + p.offsetWidth / 2;
+            var dist = Math.abs(panelCenter - center);
+            if (dist < minDist) {
+              minDist = dist;
+              closest = p;
+            }
+          });
+          if (closest) {
+            panelsWrap.querySelectorAll('.step-panel').forEach(function (p) { p.classList.remove('is-active'); });
+            closest.classList.add('is-active');
+            var step = closest.getAttribute('data-step');
+            stepsNav.querySelectorAll('.steps-nav__link--active').forEach(function (link) { link.classList.remove('steps-nav__link--active'); });
+            var link = stepsNav.querySelector('a[data-step="' + step + '"]');
+            if (link) link.classList.add('steps-nav__link--active');
+            var idx = stepOrder.indexOf(closest.id);
+            if (prevBtn) {
+              prevBtn.setAttribute('aria-disabled', idx <= 0);
+              prevBtn.classList.toggle('steps-click-area--disabled', idx <= 0);
+            }
+            if (nextBtn) {
+              nextBtn.setAttribute('aria-disabled', idx >= stepOrder.length - 1);
+              nextBtn.classList.toggle('steps-click-area--disabled', idx >= stepOrder.length - 1);
+            }
+            syncPanelsHeight();
+          }
+        }
+        function scrollToStep(stepId) {
+          var panel = panelsWrap.querySelector('.step-panel[id="' + stepId + '"]');
+          if (!panel) return;
+          var targetScroll = panel.offsetLeft - (panelsWrap.clientWidth / 2) + (panel.offsetWidth / 2);
+          panelsWrap.scrollTo({ left: targetScroll, behavior: 'smooth' });
+        }
         function showStep(stepId) {
           var panel = panelsWrap.querySelector('.step-panel[id="' + stepId + '"]');
           if (!panel) return;
@@ -1666,9 +1729,22 @@
           var link = stepsNav.querySelector('a[data-step="' + step + '"]');
           if (link) link.classList.add('steps-nav__link--active');
           var idx = stepOrder.indexOf(stepId);
-          if (prevBtn) prevBtn.disabled = idx <= 0;
-          if (nextBtn) nextBtn.disabled = idx >= stepOrder.length - 1;
+          if (prevBtn) {
+            prevBtn.setAttribute('aria-disabled', idx <= 0);
+            prevBtn.classList.toggle('steps-click-area--disabled', idx <= 0);
+          }
+          if (nextBtn) {
+            nextBtn.setAttribute('aria-disabled', idx >= stepOrder.length - 1);
+            nextBtn.classList.toggle('steps-click-area--disabled', idx >= stepOrder.length - 1);
+          }
+          syncPanelsHeight();
+          scrollToStep(stepId);
+          if (history.replaceState) history.replaceState(null, '', '#' + stepId);
         }
+        panelsWrap.addEventListener('scroll', function () {
+          if (panelsWrap._scrollTimeout) clearTimeout(panelsWrap._scrollTimeout);
+          panelsWrap._scrollTimeout = setTimeout(updateActiveFromScroll, 50);
+        });
         stepsNav.addEventListener('click', function (e) {
           var a = e.target.closest('a[data-step]');
           if (!a) return;
@@ -1679,8 +1755,8 @@
           showStep(panel.id);
           if (history.replaceState) history.replaceState(null, '', '#' + panel.id);
         });
-        if (prevBtn) prevBtn.addEventListener('click', function () {
-          if (prevBtn.disabled) return;
+        function handlePrev() {
+          if (prevBtn && prevBtn.getAttribute('aria-disabled') === 'true') return;
           var active = panelsWrap.querySelector('.step-panel.is-active');
           if (!active) return;
           var idx = stepOrder.indexOf(active.id);
@@ -1688,9 +1764,9 @@
             showStep(stepOrder[idx - 1]);
             if (history.replaceState) history.replaceState(null, '', '#' + stepOrder[idx - 1]);
           }
-        });
-        if (nextBtn) nextBtn.addEventListener('click', function () {
-          if (nextBtn.disabled) return;
+        }
+        function handleNext() {
+          if (nextBtn && nextBtn.getAttribute('aria-disabled') === 'true') return;
           var active = panelsWrap.querySelector('.step-panel.is-active');
           if (!active) return;
           var idx = stepOrder.indexOf(active.id);
@@ -1698,13 +1774,23 @@
             showStep(stepOrder[idx + 1]);
             if (history.replaceState) history.replaceState(null, '', '#' + stepOrder[idx + 1]);
           }
-        });
+        }
+        if (prevBtn) {
+          prevBtn.addEventListener('click', handlePrev);
+          prevBtn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePrev(); } });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', handleNext);
+          nextBtn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNext(); } });
+        }
+        /* 横向轮播支持原生触摸滑动，scroll-snap 自动吸附，scroll 监听更新 active */
         var hash = location.hash.slice(1);
         if (hash && /^step-\d{2}$/.test(hash)) showStep(hash);
         else {
           var act = panelsWrap.querySelector('.step-panel.is-active');
           if (act) showStep(act.id);
         }
+        window.addEventListener('load', syncPanelsHeight);
       })();
 
       })();
